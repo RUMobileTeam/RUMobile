@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
 import Header from '../Components/Header';
 
 export default class StopScreen extends Component {
@@ -46,31 +46,51 @@ export default class StopScreen extends Component {
         </View>
         <View style={styles.navbar}>
           <TouchableWithoutFeedback onPress={this.onHomePress.bind(this)}>
-          <View>
+          <View style={styles.navbarItemStyle}>
+          <Image
+            style={{ width: 25, height: 22, marginBottom: 2}}
+            source={require('../images/TodayUnselected.jpg')}
+          />
           <Text style={styles.navbarFontStyle}>Today</Text>
           </View>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback>
-          <View>
-          <Text style={styles.navbarFontStyle}>Bus</Text>
+          <View style={styles.navbarItemStyle}>
+          <Image
+            style={{ width: 22, height: 22, marginBottom: 2}}
+            source={require('../images/BusSelected.jpg')}
+          />
+          <Text style={{...styles.navbarFontStyle, color: '#ed4545'}}>Bus</Text>
           </View>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={this.onFoodPress.bind(this)}>
-          <View>
+          <View style={styles.navbarItemStyle}>
+          <Image
+            style={{ width: 22, height: 22, marginBottom: 2}}
+            source={require('../images/FoodUnselected.jpg')}
+          />
           <Text style={styles.navbarFontStyle}>Food</Text>
           </View>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={this.onLinksPress.bind(this)}>
-          <View>
+          <View style={styles.navbarItemStyle}>
+          <Image
+            style={{ width: 22, height: 22, marginBottom: 2}}
+            source={require('../images/LinksUnselected.jpg')}
+          />
           <Text style={styles.navbarFontStyle}>Links</Text>
           </View>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={this.onMorePress.bind(this)}>
-          <View>
+          <View style={styles.navbarItemStyle}>
+          <Image
+            style={{ width: 22, height: 6, marginBottom: 7, marginTop: 8}}
+            source={require('../images/MoreUnselected.jpg')}
+          />
           <Text style={styles.navbarFontStyle}>More</Text>
           </View>
           </TouchableWithoutFeedback>
@@ -112,6 +132,10 @@ const styles = {
       fontSize: 10,
       fontWeight: 'bold',
       color: 'rgb(142, 142, 147)',
-      fontFamily: 'system font'
+      fontFamily: 'system font',
+      bottom: -3
+    },
+    navbarItemStyle: {
+      alignItems: 'center'
     }
 };

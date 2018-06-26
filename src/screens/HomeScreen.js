@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import Header from '../Components/Header';
@@ -72,15 +72,23 @@ class HomeScreen extends Component {
 
             <View>
             <TouchableWithoutFeedback>
-            <View>
-            <Text style={styles.navbarFontStyle}>Today</Text>
+            <View style={styles.navbarItemStyle}>
+            <Image
+              style={{ width: 25, height: 22, marginBottom: 2}}
+              source={require('../images/TodaySelected.jpg')}
+            />
+            <Text style={{...styles.navbarFontStyle, color: '#ed4545'}}>Today</Text>
             </View>
             </TouchableWithoutFeedback>
             </View>
 
             <View>
             <TouchableWithoutFeedback onPress={this.onBusPress.bind(this)}>
-            <View>
+            <View style={styles.navbarItemStyle}>
+            <Image
+              style={{ width: 22, height: 22, marginBottom: 2}}
+              source={require('../images/BusUnselected.jpg')}
+            />
             <Text style={styles.navbarFontStyle}>Bus</Text>
             </View>
             </TouchableWithoutFeedback>
@@ -88,7 +96,11 @@ class HomeScreen extends Component {
 
             <View>
             <TouchableWithoutFeedback onPress={this.onFoodPress.bind(this)}>
-            <View>
+            <View style={styles.navbarItemStyle}>
+            <Image
+              style={{ width: 22, height: 22, marginBottom: 2}}
+              source={require('../images/FoodUnselected.jpg')}
+            />
             <Text style={styles.navbarFontStyle}>Food</Text>
             </View>
             </TouchableWithoutFeedback>
@@ -96,7 +108,11 @@ class HomeScreen extends Component {
 
             <View>
             <TouchableWithoutFeedback onPress={this.onLinksPress.bind(this)}>
-            <View>
+            <View style={styles.navbarItemStyle}>
+            <Image
+              style={{ width: 22, height: 22, marginBottom: 2}}
+              source={require('../images/LinksUnselected.jpg')}
+            />
             <Text style={styles.navbarFontStyle}>Links</Text>
             </View>
             </TouchableWithoutFeedback>
@@ -104,7 +120,11 @@ class HomeScreen extends Component {
 
             <View>
             <TouchableWithoutFeedback onPress={this.onMorePress.bind(this)}>
-            <View>
+            <View style={styles.navbarItemStyle}>
+            <Image
+              style={{ width: 22, height: 6, marginBottom: 7, marginTop: 8}}
+              source={require('../images/MoreUnselected.jpg')}
+            />
             <Text style={styles.navbarFontStyle}>More</Text>
             </View>
             </TouchableWithoutFeedback>
@@ -137,7 +157,11 @@ const styles = {
       fontSize: 10,
       fontWeight: 'bold',
       color: 'rgb(142, 142, 147)',
-      fontFamily: 'system font'
+      fontFamily: 'system font',
+      bottom: -3
+    },
+    navbarItemStyle: {
+      alignItems: 'center',
     }
 };
 
