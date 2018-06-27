@@ -1,22 +1,19 @@
 //Import a Library
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import CardItem from './CardItem';
 // Create Component
 class Header extends React.Component {
-  /*renderProfilePic() {
+  renderProfilePic() {
     if (this.props.showProfilePic) {
       return (
         <Image
-          source={require('../images/userProfilePic@3x.jpg')}
+          source={require('../images/ProfilePic.jpg')}
         />
       );
     }
     return;
   }
-  <View>
-    {this.renderProfilePic()}
-  </View>*/
   render() {
     return (
 
