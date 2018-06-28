@@ -44,12 +44,13 @@ const styles = {
     paddingTop: 4,
     fontWeight: '800',
     paddingRight: 200,
+    fontFamily: 'System',
 
   },
   textStyle2: {
     fontSize: 12,
     color: 'rgb(142, 142, 147)',
-    fontFamily: 'system font',
+    fontFamily: 'System',
     fontWeight: 'bold',
   },
   imageStyle: {

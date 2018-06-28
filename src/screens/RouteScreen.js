@@ -4,6 +4,7 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
 import BottomBar from '../Components/BottomBar';
 import Header from '../Components/Header';
+import BusHeader from '../Components/BusHeader';
 
 export default class StopScreen extends Component {
 
@@ -27,6 +28,7 @@ export default class StopScreen extends Component {
                         tabTextStyle={styles.tabTextStyle}
             />
           </View>
+          <BusHeader title={"Active Routes"} />
           <BottomBar hs={true} bus={false} fs={true} ls={true} mr={true}/>
         </View>
       );

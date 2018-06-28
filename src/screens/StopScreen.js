@@ -4,8 +4,25 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
 import BottomBar from '../Components/BottomBar';
 import Header from '../Components/Header';
+import BusHeader from '../Components/BusHeader';
 
 export default class StopScreen extends Component {
+
+  constructor() {
+    super();
+    this.DummyData = {
+      nearby: [
+        {
+          name: 'Henderson',
+          value: '0.6'
+        },
+        {
+          name: 'Gibbons',
+          value: '0.7'
+        }
+      ]
+    };
+  }
 
   onChange() {
     Actions.route_screen();
@@ -27,6 +44,7 @@ export default class StopScreen extends Component {
                       tabTextStyle={styles.tabTextStyle}
           />
         </View>
+        <BusHeader title={"Nearby"} />
         <BottomBar hs={true} bus={false} fs={true} ls={true} mr={true}/>
         </View>
       );
