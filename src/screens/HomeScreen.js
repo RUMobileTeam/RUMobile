@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import Header from '../Components/Header';
 import BottomBar from '../Components/BottomBar';
-import { testAction } from '../actions';
+import { testAction, testDataPull } from '../actions';
 
 class HomeScreen extends Component {
 
   onTest() {
     this.props.testAction();
+    this.props.testDataPull();
   }
 
   getDateText(today) {
@@ -73,4 +74,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { testAction })(HomeScreen);
+export default connect(mapStateToProps, { testAction, testDataPull })(HomeScreen);
