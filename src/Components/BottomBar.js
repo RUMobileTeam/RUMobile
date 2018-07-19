@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
 
-export default class BottomBar extends Component {
+class BottomBar extends Component {
+
+  //Methods Handling Navigation
 
   onHomePress() {
     Actions.home_screen();
@@ -24,6 +26,8 @@ export default class BottomBar extends Component {
     Actions.more_screen();
   }
 
+  //Methods Handling whether or not a specific button is active
+  
   hsButton() {
     if(this.props.hs == true) {
       return (
@@ -221,3 +225,5 @@ const styles = {
       alignItems: 'center',
     }
 };
+
+export default BottomBar;

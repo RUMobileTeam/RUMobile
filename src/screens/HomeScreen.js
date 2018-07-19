@@ -4,43 +4,33 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import Header from '../Components/Header';
 import BottomBar from '../Components/BottomBar';
-import { testAction } from '../actions';
+import HomeBanner from '../Components/HomeBanner';
+import { loginUser, pullBanner, timeAction, pullDate } from '../actions';
 
 class HomeScreen extends Component {
 
-  onTest() {
-    this.props.testAction();
+  componentWillMount() {
+    //Handles the Date Text at the top of the Header
+    this.props.pullDate(new Date());
+
+    //Logins In firebase Admin which has read-only access to the RTD
+    //Add the username followed by the password as strings
+    
+    this.props.loginUser('.', '.');
   }
 
-  getDateText(today) {
-    const weekdays = new Array(7);
-    weekdays[0] = 'SUNDAY';
-    weekdays[1] = 'MONDAY';
-    weekdays[2] = 'TUESDAY';
-    weekdays[3] = 'WEDNESDAY';
-    weekdays[4] = 'THURSDAY';
-    weekdays[5] = 'FRIDAY';
-    weekdays[6] = 'SATURDAY';
+  componentDidMount() {
 
-    const months = new Array(12);
-    months[0] = 'JANUARY';
-    months[1] = 'FEBRUARY';
-    months[2] = 'MARCH';
-    months[3] = 'APRIL';
-    months[4] = 'MAY';
-    months[5] = 'JUNE';
-    months[6] = 'JULY';
-    months[7] = 'AUGUST';
-    months[8] = 'SEPTEMBER';
-    months[9] = 'OCTOBER';
-    months[10] = 'NOVEMBER';
-    months[11] = 'DECEMBER';
+    //At Every Second, the method below Time() is run. Use this to monitor refreshes
+    this.timer = setInterval(()=> this.Time(), 1000);
 
-    const day = weekdays[today.getDay()];
-    const mon = months[today.getMonth()];
-    const dayOfMonth = today.getDate().toString();
+    //This pulls the FireBase Header Data
+    this.props.pullBanner();
+  }
 
-    return `${day}, ${mon} ${dayOfMonth}`;
+  Time() {
+    var x = new Date();
+    this.props.timeAction(x);
   }
 
     render() {
@@ -48,11 +38,9 @@ class HomeScreen extends Component {
         <View style={styles.home}>
           <Header
             text={'Today'}
-            dateText={this.getDateText(new Date())}
+            dateText={this.props.dateText}
           />
-          <TouchableOpacity onPress={this.onTest.bind(this)}>
-          <Text>{this.props.test}</Text>
-          </TouchableOpacity>
+          <HomeBanner message={this.props.banner}/>
 
           <BottomBar hs={false} bus={true} fs={true} ls={true} mr={true}/>
         </View>
@@ -69,8 +57,10 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-      test: state.test.testString
+      login: state.home.login,
+      banner: state.home.banner,
+      dateText: state.home.dateText
   };
 };
 
-export default connect(mapStateToProps, { testAction })(HomeScreen);
+export default connect(mapStateToProps, { loginUser, pullBanner, timeAction, pullDate })(HomeScreen);

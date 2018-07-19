@@ -1,8 +1,8 @@
-//Import a Library
+
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 import CardItem from './CardItem';
-// Create Component
+
 class Header extends React.Component {
   renderProfilePic() {
     if (this.props.showProfilePic) {
@@ -58,5 +58,4 @@ const styles = {
   }
 };
 
-// Make It Available to App
 export default Header;
