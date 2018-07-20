@@ -12,9 +12,7 @@ export default class FoodScreen extends Component {
     componentWillMount() {
       axios.get('https://rumobile.rutgers.edu/1/rutgers-dining.txt')
       .then(response => {
-            console.log(response);
             this.setState({ food: response.data });
-            console.log(this.state);
         })
       .catch(function (error) {
         if (error.response) {
@@ -61,6 +59,7 @@ export default class FoodScreen extends Component {
           console.log(meal);
         }
       }
+      Actions.food_list();
     }
 
 
