@@ -15,14 +15,13 @@ class HomeScreen extends Component {
 
     //Logins In firebase Admin which has read-only access to the RTD
     //Add the username followed by the password as strings
-    
     this.props.loginUser('.', '.');
   }
 
   componentDidMount() {
 
     //At Every Second, the method below Time() is run. Use this to monitor refreshes
-    this.timer = setInterval(()=> this.Time(), 1000);
+    //this.timer = setInterval(()=> this.Time(), 1000);
 
     //This pulls the FireBase Header Data
     this.props.pullBanner();

@@ -3,7 +3,7 @@ import { FIREBASE_LOGIN, BANNER_PULL, HOME_DATE, TIME } from '../actions/types';
 const INITIAL_STATE = { login: '', banner: 'Welcome to RUMobile 🐻', time: [], dateText: '' };
 
 export default (state = INITIAL_STATE, action) => {
-  console.log(action);
+  //console.log(action);
   switch (action.type) {
     case FIREBASE_LOGIN:
       return { ...state, login: action.payload };

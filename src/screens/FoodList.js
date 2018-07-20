@@ -1,67 +1,91 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Image, ImageBackground } from 'react-native';
-import Header from '../Components/Header';
+import { View, Text, TouchableOpacity, Image, ImageBackground, ScrollView } from 'react-native';
+import BackHeader from '../Components/BackHeader';
 import BottomBar from '../Components/BottomBar';
+import { foodTab } from '../actions';
+import FoodSection from '../Components/FoodSection';
 
-export default class FoodScreen extends Component {
-    // state = { food: [] }
+class FoodList extends Component {
 
-    constructor(){
-      super()
-      this.state = {
-        selectedIndex: 0,
-      };
+  componentWillMount() {
+    this.props.foodTab(0);
+  }
+
+  backToFood() {
+    Actions.pop();
+  }
+
+  /*<View style={styles.section}>
+    <View style={styles.sectionImgBox}>
+      <ImageBackground source={require('../images/food/SaladBar.jpg')} style={styles.sectionImage}>
+        <Text style={styles.sectionTitle}>Salad Bar</Text>
+      </ImageBackground>
+    </View>
+    <View style={styles.sectionTextBox}>
+      <Text style={styles.sectionText}>Tomato Wedges</Text>
+    </View>
+    <View style={styles.sectionTextBox}>
+      <Text style={styles.sectionText}>Tossed Salad</Text>
+    </View>
+    <View style={styles.sectionTextBox}>
+      <Text style={styles.sectionText}>Broccoli Buds Op</Text>
+    </View>
+  </View>*/
+
+  /*<View style={styles.statusBar}>
+    <TouchableOpacity onPress={this.backToFood.bind(this)}>
+      <Text style={styles.statusBarButton}>Food</Text>
+    </TouchableOpacity>
+  </View>*/
+
+  handleIndexChange = (index) => {
+    this.props.foodTab(index)
+  }
+
+  renderFoodLists() {
+    if(this.props.data.meals[this.props.tab_index].meal_avail == true ) {
+      console.log(this.props.data.meals[this.props.tab_index].genres);
+      return this.props.data.meals[this.props.tab_index].genres.map(genre =>
+        <FoodSection key={genre.genre_name} food={genre} />
+      );
+    } else {
+      console.log('Dont Render Food');
+      return (
+        <Image
+          style={{ width: 385, height: 485 }}
+          source={require('../images/food/blankstate_nofood.png')}
+        />
+      );
     }
-
-    handleIndexChange = (index) => {
-      this.setState({
-        ...this.state,
-        selectedIndex: index,
-      });
-    }
-
-    backToFood() {
-      Actions.pop();
-    }
+  }
 
     render() {
+      console.log(this.props.data);
       return (
         <View style={styles.home}>
-          <View style={styles.statusBar}>
-            <TouchableOpacity onPress={this.backToFood.bind(this)}>
-              <Text style={styles.statusBarButton}>Food</Text>
-            </TouchableOpacity>
-          </View>
+
+        <BackHeader
+          text={'Food'}
+        />
           <View style={styles.titleBar}>
-            <Text style={styles.titleText}>Livingston Dining Commons</Text>
+            <Text style={styles.titleText}>{this.props.data.location_name}</Text>
             <SegmentedControlTab
               values={['BREAKFAST', 'LUNCH', 'DINNER', 'TAKEOUT']}
-              selectedIndex={this.state.selectedIndex}
+              selectedIndex={this.props.tab_index}
               onTabPress={this.handleIndexChange}
               activeTabStyle={styles.activeTabStyle}
               tabStyle={styles.tabStyle}
               tabTextStyle={styles.tabTextStyle}
             />
           </View>
-          <View style={styles.section}>
-            <View style={styles.sectionImgBox}>
-              <ImageBackground source={require('../images/food/SaladBar.jpg')} style={styles.sectionImage}>
-                <Text style={styles.sectionTitle}>Salad Bar</Text>
-              </ImageBackground>
-            </View>
-            <View style={styles.sectionTextBox}>
-              <Text style={styles.sectionText}>Tomato Wedges</Text>
-            </View>
-            <View style={styles.sectionTextBox}>
-              <Text style={styles.sectionText}>Tossed Salad</Text>
-            </View>
-            <View style={styles.sectionTextBox}>
-              <Text style={styles.sectionText}>Broccoli Buds Op</Text>
-            </View>
+          <ScrollView>
+          <View>
+            {this.renderFoodLists()}
           </View>
+          </ScrollView>
           <BottomBar hs={true} bus={true} fs={false} ls={true} mr={true}/>
         </View>
       );
@@ -74,38 +98,7 @@ const styles = {
       flex: 1,
       backgroundColor: 'rgb(255, 255, 255)'
     },
-    section: {
-      flex: 1,
-    },
-    sectionImgBox: {
-      height: 80,
-      flexDirection: 'row',
-    },
-    sectionImage: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-    sectionTextBox: {
-      borderColor: 'rgb(237, 237, 237)',
-      borderBottomWidth: 1,
-    },
-    sectionTitle: {
-      textAlign: 'center',
-      color: 'white',
-      fontSize: 34,
-      fontWeight: '300',
-    },
-    sectionText: {
-      paddingTop: 20,
-      paddingBottom: 20,
-      paddingLeft: 30,
-      paddingRight: 30,
-      fontSize: 18,
-    },
     statusBar: {
-      height: 67,
-      borderBottomColor: 'rgb(193, 193, 193)',
-      borderBottomWidth: 1,
       flexDirection: 'row',
     },
     statusBarButton: {
@@ -137,26 +130,40 @@ const styles = {
     tabTextStyle: {
       color: '#ed4545'
     },
-    blankImage: {
-      height: 200,
-      width: 200,
-      marginTop: 90,
-      resizeMode: 'contain',
-      alignSelf: 'center',
-      marginBottom: 20,
+    section: {
+      flex: 1,
     },
-    blankTitle: {
-      fontSize: 17,
-      color: 'rgb(120, 120, 120)',
-      fontWeight: '600',
-      paddingBottom: 10,
+    sectionImgBox: {
+      height: 80,
+      flexDirection: 'row',
+    },
+    sectionImage: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    sectionTextBox: {
+      borderColor: 'rgb(237, 237, 237)',
+      borderBottomWidth: 1,
+    },
+    sectionTitle: {
       textAlign: 'center',
-    },
-    blankText: {
-      fontSize: 16,
-      color: 'rgb(120, 120, 120)',
+      color: 'white',
+      fontSize: 34,
       fontWeight: '300',
-      paddingBottom: 10,
-      textAlign: 'center',
+    },
+    sectionText: {
+      paddingTop: 20,
+      paddingBottom: 20,
+      paddingLeft: 30,
+      paddingRight: 30,
+      fontSize: 18,
     },
 };
+
+const mapStateToProps = state => {
+  return {
+      tab_index: state.food.tab_index
+  };
+};
+
+export default connect(mapStateToProps, { foodTab })(FoodList);

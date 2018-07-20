@@ -1,67 +1,124 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { View, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Image, ImageBackground } from 'react-native';
+import { connect } from 'react-redux';
 import Header from '../Components/Header';
 import BottomBar from '../Components/BottomBar';
+import { foodPull } from '../actions';
 
-export default class FoodScreen extends Component {
-    state = { food: [] }
+class FoodScreen extends Component {
 
     componentWillMount() {
-      axios.get('https://rumobile.rutgers.edu/1/rutgers-dining.txt')
-      .then(response => {
-            this.setState({ food: response.data });
-        })
-      .catch(function (error) {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      this.props.foodPull('https://rumobile.rutgers.edu/1/rutgers-dining.txt');
     }
 
-    openStatus(location_name) {
-      for (i in this.state.food) {
-        if (this.state.food[i].location_name == location_name ) {
-          closed_count = 0
-          for (j in this.state.food[i].meals) {
-            if (!this.state.food[i].meals[j].meal_avail) {
-              closed_count += 1;
-            }
-          }
-          if (closed_count == this.state.food[i].meals.length) {
-            return <Image source={require('../images/food/closedStatusIcon.png')} style={styles.cardStatus} />;
-          } else {
-            return <Image source={require('../images/food/openStatusIcon.png')} style={styles.cardStatus} />;
+    openStatus(name) {
+      var open = false;
+      if(name == 'brower') {
+        console.log(this.props.brower.meals);
+        for (var i = 0; i < this.props.brower.meals.length; i++) {
+          if(this.props.brower.meals[i].meal_avail == true) {
+            open = true;
           }
         }
-      }
-    }
-
-    foodList(location_name) {
-      for (i in this.state.food) {
-        if (this.state.food[i].location_name == location_name ) {
-          meal = this.state.food[i];
-          console.log(meal);
+        if (open == true) {
+          return <Image source={require('../images/food/openStatusIcon.png')} style={styles.cardStatus} />;
+        } else {
+          return <Image source={require('../images/food/closedStatusIcon.png')} style={styles.cardStatus} />;
         }
       }
-      Actions.food_list();
+
+      if(name == 'busch') {
+        console.log(this.props.busch.meals);
+        for (var i = 0; i < this.props.busch.meals.length; i++) {
+          if(this.props.busch.meals[i].meal_avail == true) {
+            open = true;
+          }
+        }
+        if (open == true) {
+          return <Image source={require('../images/food/openStatusIcon.png')} style={styles.cardStatus} />;
+        } else {
+          return <Image source={require('../images/food/closedStatusIcon.png')} style={styles.cardStatus} />;
+        }
+      }
+
+      if(name == 'livingston') {
+        console.log(this.props.livingston.meals);
+        for (var i = 0; i < this.props.livingston.meals.length; i++) {
+          if(this.props.livingston.meals[i].meal_avail == true) {
+            open = true;
+          }
+        }
+        if (open == true) {
+          return <Image source={require('../images/food/openStatusIcon.png')} style={styles.cardStatus} />;
+        } else {
+          return <Image source={require('../images/food/closedStatusIcon.png')} style={styles.cardStatus} />;
+        }
+      }
+
+      if(name == 'neilson') {
+        console.log(this.props.neilson.meals);
+        for (var i = 0; i < this.props.neilson.meals.length; i++) {
+          if(this.props.neilson.meals[i].meal_avail == true) {
+            open = true;
+          }
+        }
+        if (open == true) {
+          return <Image source={require('../images/food/openStatusIcon.png')} style={styles.cardStatus} />;
+        } else {
+          return <Image source={require('../images/food/closedStatusIcon.png')} style={styles.cardStatus} />;
+        }
+      }
+
     }
 
+    foodList(d) {
+      Actions.food_list({ data: d });
+    }
+
+    renderFood() {
+      if(this.props.trying_food_pull == 'pulled') {
+        return (
+          <View style={styles.cardGrid}>
+            <View style={styles.cardRow}>
+              <TouchableOpacity onPress={() => this.foodList(this.props.brower)}>
+                <ImageBackground source={require('../images/food/browerImg.png')} style={styles.cardBody}>
+                  <Text style={styles.cardTitle}>Brower</Text>
+                  {this.openStatus('brower')}
+                </ImageBackground>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => this.foodList(this.props.busch)}>
+                <ImageBackground source={require('../images/food/buschImg.png')} style={styles.cardBody}>
+                  <Text style={styles.cardTitle}>Busch</Text>
+                  {this.openStatus('busch')}
+                </ImageBackground>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.cardRow}>
+              <TouchableOpacity onPress={() => this.foodList(this.props.livingston)}>
+                <ImageBackground source={require('../images/food/livingstonImg.png')} style={styles.cardBody}>
+                  <Text style={styles.cardTitle}>Livingston</Text>
+                  {this.openStatus('livingston')}
+                </ImageBackground>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => this.foodList(this.props.neilson)}>
+                <ImageBackground source={require('../images/food/neilsonImg.png')} style={styles.cardBody}>
+                  <Text style={styles.cardTitle}>Neilson</Text>
+                  {this.openStatus('neilson')}
+                </ImageBackground>
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
+      } else {
+        return (
+          <Text>Pulling, Please Wait . . .</Text>
+        );
+      }
+    }
 
     render() {
       return (
@@ -69,41 +126,11 @@ export default class FoodScreen extends Component {
           <Header
             text={'Food'}
           />
-          <View style={styles.titleBar} />
           <View style={styles.bodyGrid}>
-            <Text style={styles.baseText} >PLACES TO EAT</Text>
-            <Text style={styles.titleText} >Dining Halls</Text>
-            <Text style={styles.subText} >Food is essential to life!</Text>
-            <View style={styles.cardGrid}>
-              <View style={styles.cardRow}>
-                <TouchableOpacity onPress={() => this.foodList('Brower Commons')}>
-                  <ImageBackground source={require('../images/food/browerImg.png')} style={styles.cardBody}>
-                    <Text style={styles.cardTitle}>Brower</Text>
-                    {this.openStatus('Brower Commons')}
-                  </ImageBackground>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.foodList('Busch Dining Hall')}>
-                  <ImageBackground source={require('../images/food/buschImg.png')} style={styles.cardBody}>
-                    <Text style={styles.cardTitle}>Busch</Text>
-                    {this.openStatus('Busch Dining Hall')}
-                  </ImageBackground>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.cardRow}>
-                <TouchableOpacity onPress={() => this.foodList('Livingston Dining Commons')}>
-                  <ImageBackground source={require('../images/food/livingstonImg.png')} style={styles.cardBody}>
-                    <Text style={styles.cardTitle}>Livingston</Text>
-                    {this.openStatus('Livingston Dining Commons')}
-                  </ImageBackground>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.foodList('Neilson Dining Hall')}>
-                  <ImageBackground source={require('../images/food/neilsonImg.png')} style={styles.cardBody}>
-                    <Text style={styles.cardTitle}>Neilson</Text>
-                    {this.openStatus('Neilson Dining Hall')}
-                  </ImageBackground>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <Text style={styles.baseText}>PLACES TO EAT</Text>
+            <Text style={styles.titleText}>Dining Halls</Text>
+            <Text style={styles.subText}>Food is essential to life!</Text>
+            {this.renderFood()}
           </View>
           <BottomBar hs={true} bus={true} fs={false} ls={true} mr={true}/>
         </View>
@@ -117,16 +144,22 @@ const styles = {
       flex: 1,
       backgroundColor: 'rgb(255, 255, 255)'
     },
-    bodyGrid: {
-      paddingLeft: 15,
-      paddingRight: 15,
-      paddingTop: 11,
-
+    titleBar: {
+      marginLeft: 15,
+      marginRight: 15,
+      height: 2,
+      backgroundColor: 'rgb(231, 231, 231)',
     },
     baseText: {
       fontSize: 11,
       fontWeight: '600',
       color: 'rgb(236, 70, 70)'
+    },
+    bodyGrid: {
+      paddingLeft: 15,
+      paddingRight: 15,
+      paddingTop: 11,
+
     },
     titleText: {
       fontSize: 22,
@@ -134,12 +167,6 @@ const styles = {
     subText: {
       fontSize: 22,
       color: 'rgb(138, 138, 143)',
-    },
-    titleBar: {
-      marginLeft: 15,
-      marginRight: 15,
-      height: 2,
-      backgroundColor: 'rgb(231, 231, 231)',
     },
     cardGrid: {
       height: 355,
@@ -172,3 +199,15 @@ const styles = {
       marginTop: 98,
     }
 };
+
+const mapStateToProps = state => {
+  return {
+      trying_food_pull: state.food.trying_food_pull,
+      brower: state.food.brower,
+      busch: state.food.busch,
+      livingston: state.food.livingston,
+      neilson: state.food.neilson,
+  };
+};
+
+export default connect(mapStateToProps, { foodPull })(FoodScreen);
