@@ -15,6 +15,8 @@ import {
   //Xu --2
   NEARBYBUS,
   ALLBUS,
+  ACTIVEROUTES,
+  INACTIVEROUTES,
   //end --2
 
 } from './types';
@@ -23,7 +25,6 @@ var nextbus = require('nextbusjs');
 
 //Xu --3
 var geodist = require('geodist');
-
 var agency_id = '1199';
 var base_url = 'https://transloc-api-1-2.p.mashape.com/';
 var all_stops_url = base_url + 'stops.json?agencies=' + agency_id; // + '&callback=call';
@@ -47,6 +48,8 @@ export const getBusStops =  () => {
   var all_stops = [];
   var user_location = {};
   var nearby_count = 3;
+  var routes_active = [];
+  var routes_inactive = [];
 
   var getUserLocation = new Promise((resolve, reject) => {
     user_location = {};
@@ -78,14 +81,21 @@ export const getBusStops =  () => {
         if (data[i]['is_active']) {
           rid = data[i]['route_id'];
           active_routs[rid] = data[i]['short_name'];
+          routes_active.push(data[i]['short_name']);
+        } else {
+          routes_inactive.push(data[i]['short_name']);
         }
       };
+
       resolve(active_routs);
     });
   });
 
   return (dispatch) => {
+
     Promise.all([getUserLocation, getActiveRoutes]).then((value) => {
+      dispatch({ type: ACTIVEROUTES, payload: routes_active });
+      dispatch({ type: INACTIVEROUTES, payload: routes_inactive });
       axios({
         method:'get',
         url: all_stops_url,

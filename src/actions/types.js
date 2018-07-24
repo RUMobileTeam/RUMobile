@@ -29,3 +29,5 @@ export const ALL_DATA = 'all_data';
 
 export const NEARBYBUS = 'nearbyBus';
 export const ALLBUS = 'allBus';
+export const ACTIVEROUTES = 'activeRoutes';
+export const INACTIVEROUTES = 'inactiveRoutes';

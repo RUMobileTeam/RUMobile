@@ -10,6 +10,8 @@ import { COLLAPSE_BUS_ROW,
   //Xu --1
   NEARBYBUS,
   ALLBUS,
+  ACTIVEROUTES,
+  INACTIVEROUTES,
   //end --1
 
 } from '../actions/types';
@@ -18,7 +20,7 @@ const INITIAL_STATE = {
   collapse: false, nbd_here: 'not pulling', nearbydata: null, nearbydata2: {}, allkeys: {}, khere: 'no', procc: '', alldata: [],
 
   //Xu --2
-  nearbyBus: [], allBus: [],
+  nearbyBus: [], allBus: [], activeRoutes: [], inactiveRoutes: [],
   //end --2
 };
 
@@ -32,6 +34,10 @@ export default (state = INITIAL_STATE, action) => {
     case NEARBYBUS:
       return { ...state, collapse: action.payload };
     case ALLBUS:
+      return { ...state, collapse: action.payload };
+    case ACTIVEROUTES:
+      return { ...state, collapse: action.payload };
+    case INACTIVEROUTES:
       return { ...state, collapse: action.payload };
     //end --3
 
