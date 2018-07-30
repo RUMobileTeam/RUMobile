@@ -44,6 +44,7 @@ export const buttonRotate =  (bool) => {
 export const getBusStops =  () => {
   var stops = {};
   var active_routs = {};
+  var inactive_routs = {};
   var nearby_stops = [];
   var all_stops = [];
   var user_location = {};
@@ -83,6 +84,8 @@ export const getBusStops =  () => {
           active_routs[rid] = data[i]['short_name'];
           routes_active.push(data[i]['short_name']);
         } else {
+          rid = data[i]['route_id'];
+          inactive_routs[rid] = data[i]['short_name'];
           routes_inactive.push(data[i]['short_name']);
         }
       };
@@ -110,6 +113,7 @@ export const getBusStops =  () => {
         for (i in data) {
           s = {};
           route = [];
+          inactive_routes = [];
           s.name = data[i]['name'];
           for (i in data[i]['routes']) {
             rid = data[i]['routes'][i];
@@ -117,8 +121,13 @@ export const getBusStops =  () => {
               rname = active_routs[rid];
               route.push(rname);
             }
+            if (inactive_routs[rid]) {
+              rname = inactive_routs[rid];
+              inactive_routes.push(rname);
+            }
           }
           s.route = route;
+          s.inactive_routes = inactive_routes;
           distance = geodist(user_location, data[i].location, {exact: true, unit: 'miles'});
           s.distance = distance;
           all_stops.push(s);
@@ -131,6 +140,7 @@ export const getBusStops =  () => {
             s = {};
             s.name = all_stops[i].name;
             s.route = all_stops[i].route;
+            s.inactive_routes = inactive_routes;
             s.distance = all_stops[i].distance.toFixed(2);
             temp_list.push(s);
           }
