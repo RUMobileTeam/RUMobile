@@ -10,7 +10,7 @@ export default class FoodScreen extends Component {
 
   constructor() {
     super();
-
+    links = new Array();
     //Adds to the list of links. Just add and remove entries as neccesary
     links.push({ title: 'myRutgers', url: 'https://cas.rutgers.edu/login?service=https://my.rutgers.edu/portal/Login', src: require('../images/Links/myRutgers.imageset/University-75.png') });
     links.push({ title: 'Sakai', url: 'https://cas.rutgers.edu/login?service=https%3A%2F%2Fsakai.rutgers.edu%2Fsakai-login-tool%2Fcontainer', src: require('../images/Links/sakai.imageset/Classroom-75.png') });
@@ -42,6 +42,7 @@ export default class FoodScreen extends Component {
       });
   }
 
+
   LinkList() {
     return links.map(link =>
       <TouchableOpacity key={link.title} onPress={() => this.sfViewController(link)}>
@@ -62,7 +63,6 @@ export default class FoodScreen extends Component {
     );
   }
     render() {
-      console.log(links);
       return (
         <View style={styles.home}>
           <Header

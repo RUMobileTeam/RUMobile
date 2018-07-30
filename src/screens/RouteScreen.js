@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, ScrollView } from 'react-native';
 import BottomBar from '../Components/BottomBar';
 import Header from '../Components/Header';
 import BusHeader from '../Components/BusHeader';
+import ActiveList from '../Components/ActiveList';
+import InactiveList from '../Components/InactiveList';
 
 export default class StopScreen extends Component {
 
@@ -28,7 +30,14 @@ export default class StopScreen extends Component {
                         tabTextStyle={styles.tabTextStyle}
             />
           </View>
+          <ScrollView>
           <BusHeader title={"Active Routes"} />
+          <View style={{height: 10}}/>
+          <ActiveList />
+          <BusHeader title={"Inactive Routes"} />
+          <View style={{height: 10}}/>
+          <InactiveList />
+          </ScrollView>
           <BottomBar hs={true} bus={false} fs={true} ls={true} mr={true}/>
         </View>
       );

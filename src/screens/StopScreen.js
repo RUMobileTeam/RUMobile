@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, ScrollView } from 'react-native';
 import BottomBar from '../Components/BottomBar';
 import Header from '../Components/Header';
 import BusHeader from '../Components/BusHeader';
+import { getBusStops } from '../actions';
+import NearbyList from '../Components/NearbyList';
+import AllList from '../Components/AllList';
 
-export default class StopScreen extends Component {
+class StopScreen extends Component {
 
-  constructor() {
-    super();
-    this.DummyData = {
-      nearby: [
-        {
-          name: 'Henderson',
-          value: '0.6'
-        },
-        {
-          name: 'Gibbons',
-          value: '0.7'
-        }
-      ]
-    };
+  componentWillMount() {
+    if(this.props.check == 'here') {
+
+    } else {
+      this.props.getBusStops();
+    }
   }
 
   onChange() {
@@ -44,7 +40,12 @@ export default class StopScreen extends Component {
                       tabTextStyle={styles.tabTextStyle}
           />
         </View>
-        <BusHeader title={"Nearby"} />
+        <ScrollView>
+          <BusHeader title={"Nearby"} />
+          <NearbyList />
+          <BusHeader title={"All"} />
+          <AllList />
+        </ScrollView>
         <BottomBar hs={true} bus={false} fs={true} ls={true} mr={true}/>
         </View>
       );
@@ -68,3 +69,14 @@ const styles = {
       color: '#ed4545'
     },
 };
+
+const mapStateToProps = state => {
+  return {
+      nearby: state.bus.nb_data,
+      all: state.bus.all_data,
+      check: state.bus.data_here
+  };
+};
+
+
+export default connect(mapStateToProps, { getBusStops })(StopScreen);
